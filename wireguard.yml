@@ -1,0 +1,23 @@
+services:
+  wireguard:
+    image: linuxserver/wireguard:latest
+    container_name: wireguard
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    environment:
+      - PUID=[e.g. 1000]
+      - PGID=[e.g. 1000]
+      - TZ=[e.g. Europe/London]
+      - SERVERURL=[DDNS hostname] #set to auto if server has static IP, otherwise use a DDNS hostname
+      - SERVERPORT=51822
+      - PEERS=[name of peer connections, e.g. myiphone, myipad]
+      - PEERDNS=auto
+      - INTERNAL_SUBNET=10.13.13.0 #optional
+      - ALLOWEDIPS=0.0.0.0/0 #full tunnel always
+    volumes:
+      - [e.g. /home/pi/docker/wireguard/config]:/config
+      - /lib/modules:/lib/modules #do not change
+    ports:
+      - 51822:51820/udp
+    restart: unless-stopped
